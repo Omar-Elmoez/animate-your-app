@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react';
+import { createContext, useReducer } from 'react';
+import ChallengesReducer from '../reducers/challenge-reducer';
 
 export const ChallengesContext = createContext({
   challenges: [],
@@ -7,30 +8,27 @@ export const ChallengesContext = createContext({
 });
 
 export default function ChallengesContextProvider({ children }) {
-  const [challenges, setChallenges] = useState([]);
+  const [challenges, dispatch] = useReducer(ChallengesReducer, [])
 
   function addChallenge(challenge) {
-    setChallenges((prevChallenges) => [
-      { ...challenge, id: Math.random().toString(), status: 'active' },
-      ...prevChallenges,
-    ]);
+    dispatch({
+      type: 'ADD_CHALLENGE',
+      payload: challenge
+    })
   }
 
   function deleteChallenge(challengeId) {
-    setChallenges((prevChallenges) =>
-      prevChallenges.filter((challenge) => challenge.id !== challengeId)
-    );
+    dispatch({
+      type: 'DELETE_CHALLENGE',
+      payload: challengeId
+    })
   }
 
   function updateChallengeStatus(challengeId, newStatus) {
-    setChallenges((prevChallenges) =>
-      prevChallenges.map((challenge) => {
-        if (challenge.id === challengeId) {
-          return { ...challenge, status: newStatus };
-        }
-        return challenge;
-      })
-    );
+    dispatch({
+      type: 'UPDATE_CHALLENGE_STATUS',
+      payload: { challengeId, newStatus }
+    })
   }
 
   const challengesContext = {
