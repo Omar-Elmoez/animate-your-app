@@ -41,20 +41,45 @@ export default function NewChallenge({ onDone }) {
   return (
     <Modal title="New Challenge" onClose={onDone}>
       <form id="new-challenge" onSubmit={handleSubmit}>
-        <p>
-          <label htmlFor="title">Title</label>
-          <input ref={title} type="text" name="title" id="title" />
-        </p>
+        <motion.div
+          variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
+        >
+          <motion.p
+            variants={{
+              hidden: { y: -50, opacity: 0 },
+              visible: { y: 0, opacity: 1 },
+            }}
+            transition={{ type: "spring" }}
+            exit={{ y: 0, opacity: 1 }}
+          >
+            <label htmlFor="title">Title</label>
+            <input ref={title} type="text" name="title" id="title" />
+          </motion.p>
 
-        <p>
-          <label htmlFor="description">Description</label>
-          <textarea ref={description} name="description" id="description" />
-        </p>
+          <motion.p
+            variants={{
+              hidden: { y: -50, opacity: 0 },
+              visible: { y: 0, opacity: 1 },
+            }}
+            transition={{ type: "spring" }}
+            exit={{ y: 0, opacity: 1 }}
+          >
+            <label htmlFor="description">Description</label>
+            <textarea ref={description} name="description" id="description" />
+          </motion.p>
 
-        <p>
-          <label htmlFor="deadline">Deadline</label>
-          <input ref={deadline} type="date" name="deadline" id="deadline" />
-        </p>
+          <motion.p
+            variants={{
+              hidden: { y: -50, opacity: 0 },
+              visible: { y: 0, opacity: 1 },
+            }}
+            transition={{ type: "spring" }}
+            exit={{ y: 0, opacity: 1 }}
+          >
+            <label htmlFor="deadline">Deadline</label>
+            <input ref={deadline} type="date" name="deadline" id="deadline" />
+          </motion.p>
+        </motion.div>
 
         <motion.ul
           id="new-challenge-images"
