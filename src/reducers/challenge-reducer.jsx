@@ -14,6 +14,7 @@ function ChallengesReducer(state, action) {
         if (challenge.id === action.payload.challengeId) {
           return { ...challenge, status: action.payload.newStatus };
         }
+        return challenge;
       });
   }
 }
