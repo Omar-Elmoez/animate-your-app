@@ -1,24 +1,58 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import cityImg from '../assets/city.jpg';
-import heroImg from '../assets/hero.png';
+import cityImg from "../assets/city.jpg";
+import heroImg from "../assets/hero.png";
+import { useScroll, useTransform, motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 export default function WelcomePage() {
+  const { scrollY } = useScroll();
+
+  const cityOpacity = useTransform(
+    scrollY,
+    [0, 200, 300, 500],
+    [1, 0.5, 0.5, 0]
+  );
+  const cityPosition = useTransform(scrollY, [0, 200], [0, -100]);
+
+  const heroOpacity = useTransform(scrollY, [0, 300, 500], [1, 1, 0]);
+  const heroPosition = useTransform(scrollY, [0, 200], [0, -150]);
+
+  const textScale = useTransform(scrollY, [0, 300], [1, 1.5]);
+  const textPosition = useTransform(
+    scrollY,
+    [0, 200, 300, 500],
+    [0, 50, 50, 300]
+  );
+
+  const para = useRef();
+  const isInView = useInView(para);
+
   return (
     <>
       <header id="welcome-header">
-        <div id="welcome-header-content">
+        <motion.div
+          id="welcome-header-content"
+          style={{ scale: textScale, y: textPosition }}
+        >
           <h1>Ready for a challenge?</h1>
           <Link id="cta-link" to="/challenges">
             Get Started
           </Link>
-        </div>
-        <img
+        </motion.div>
+        <motion.img
+          style={{ opacity: cityOpacity, y: cityPosition }}
           src={cityImg}
           alt="A city skyline touched by sunlight"
           id="city-image"
         />
-        <img src={heroImg} alt="A superhero wearing a cape" id="hero-image" />
+
+        <motion.img
+          style={{ opacity: heroOpacity, y: heroPosition }}
+          src={heroImg}
+          alt="A superhero wearing a cape"
+          id="hero-image"
+        />
       </header>
       <main id="welcome-content">
         <section>
@@ -30,9 +64,23 @@ export default function WelcomePage() {
           </p>
         </section>
 
-        <section>
-          <h2>Why Challenge Yourself?</h2>
-          <p>
+        <section ref={para}>
+          <h2
+            style={{
+              opacity: isInView ? 1 : 0,
+              transform: isInView ? "none" : "translateX(-500px)",
+              transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.3s"
+            }}
+          >
+            Why Challenge Yourself?
+          </h2>
+          <p
+            style={{
+              opacity: isInView ? 1 : 0,
+              transform: isInView ? "none" : "translateX(-500px)",
+              transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s"
+            }}
+          >
             Challenges provide a framework for growth. They push boundaries,
             test limits, and result in genuine progress. Here, we believe
             everyone has untapped potential, waiting to be unlocked.
